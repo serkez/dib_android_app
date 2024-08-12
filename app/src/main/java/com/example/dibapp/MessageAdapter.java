@@ -1,8 +1,12 @@
 package com.example.dibapp;
 
+import android.graphics.Color;
+import android.os.Message;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.textclassifier.ConversationActions;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,15 +32,30 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         return new MessageViewHolder(view);
     }
 
-    @Override
-    public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
-        String message = messageList.get(position);
-        holder.messageTextView.setText(message);
+@Override
+public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
+    String message = messageList.get(position);
+
+    // Check if the index is even or odd to determine the sender
+    if (position % 2 == 0) {
+        // Even index: User's message (right-aligned)
+        holder.messageTextView.setGravity(Gravity.END); // X work
+        holder.messageTextView.setBackgroundResource(R.drawable.user_message_background);
+        holder.messageTextView.setTextColor(Color.WHITE);
+    } else {
+        // Odd index: Computer's message (left-aligned)
+        holder.messageTextView.setGravity(Gravity.START); //X work
+        holder.messageTextView.setBackgroundResource(R.drawable.computer_message_background);
+        holder.messageTextView.setTextColor(Color.BLACK);
     }
+
+    holder.messageTextView.setText(message);
+}
+
 
     @Override
     public int getItemCount() {
-        if(messageList == null)
+        if (messageList == null)
             return 0;
         return messageList.size();
     }
