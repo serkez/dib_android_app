@@ -1,5 +1,8 @@
 package com.example.dibapp;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Message;
 import android.view.Gravity;
@@ -13,16 +16,26 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dibapp.R;
+import com.example.dibapp.model.Dib;
+import com.google.gson.Gson;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
 
     private List<String> messageList;
 
+
     public MessageAdapter(List<String> messageList) {
         this.messageList = messageList;
     }
+/*    public MessageAdapter(Dib chat){
+        this.chat = chat;
+        if(this.chat.getMessageList() != null)
+            this.messageList = this.chat.getMessageList();
+        else messageList = new ArrayList<>();
+    }*/
 
     @NonNull
     @Override
@@ -68,6 +81,7 @@ public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
             messageTextView = itemView.findViewById(R.id.message_text_view);
         }
     }
+
 }
 /*
 package com.example.dibapp;
