@@ -2,39 +2,58 @@ package com.example.dibapp;
 
 import android.os.Bundle;
 
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.View;
+import android.os.Handler;
 
 import com.example.dibapp.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
+    private RecyclerView recyclerView;
+    private MessageAdapter messageAdapter;
+    private List<String> messageList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        RecyclerView recyclerView = findViewById(R.id.rv_messages);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+         recyclerView = findViewById(R.id.rv_messages);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        List<String> prompts = Arrays.asList("Tell me a joke", "What's the weather?", "Say hello");
-        MessageAdapter adapter = new MessageAdapter(prompts);
-        recyclerView.setHasFixedSize(false);
-        recyclerView.setAdapter(adapter);
+        messageList = new ArrayList<>();
+        messageAdapter = new MessageAdapter(messageList);
+        recyclerView.setAdapter(messageAdapter);
+
+        Button sendButton = findViewById(R.id.send_button);
+        EditText inputText = findViewById(R.id.input_text);
+
+        sendButton.setOnClickListener(view -> {
+            String userInput = inputText.getText().toString().trim();
+            if (!userInput.isEmpty()) {
+                addMessage(userInput);
+                inputText.setText("");
+
+                // Simulate a response after a delay
+                new Handler().postDelayed(() -> addMessage("This is a response"), 1000);
+            }
+        });
     }
 
 
@@ -47,6 +66,13 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
   //  }
+
+    private void addMessage(String message) {
+        messageList.add(message);
+        messageAdapter.notifyItemInserted(messageList.size() - 1);
+        if(recyclerView != null && messageList.size()>1)
+            recyclerView.scrollToPosition(messageList.size() - 1);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

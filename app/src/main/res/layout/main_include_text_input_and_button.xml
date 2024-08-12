@@ -19,7 +19,7 @@
     <LinearLayout style="@style/buttonBarStyle">
 
         <EditText
-            android:id="@+id/inputText"
+            android:id="@+id/input_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?android:attr/editTextBackground"
@@ -29,7 +29,7 @@
 
         <!-- Button for sending message -->
         <Button
-            android:id="@+id/sendButton"
+            android:id="@+id/send_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
