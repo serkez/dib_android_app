@@ -4,10 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
+
     android:orientation="vertical"
     android:padding="@dimen/activity_horizontal_half_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <!--
+    android:fitsSystemWindows="true"
+
+    when i remove fits sytem, bottom shows up
+    when re remove app_barscrolling, bottom pops up with keyboard but title bar goes away
+    and now automatic scrolling is gone too-->
 
 
     <!-- RecyclerView for displaying chat messages inside a MaterialCardView -->
@@ -21,14 +28,14 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_messages"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="16dp"
             tools:showIn="@layout/content_main" />
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Input and Button Section inside a MaterialCardView -->
-    <com.google.android.material.card.MaterialCardView
+
+    <LinearLayout
         android:id="@+id/input_and_button_card"
         style="@style/MaterialCardWithColoredBorder"
         android:layout_width="0dp"
@@ -36,34 +43,26 @@
         android:layout_margin="@dimen/activity_horizontal_half_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="horizontal">
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <EditText
+            android:id="@+id/input_text"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/activity_horizontal_margin_double"
-            android:layout_marginBottom="@dimen/activity_horizontal_margin_double"
-            android:orientation="horizontal">
+            android:layout_weight="1"
+            android:hint="@string/type_a_message"
+            android:inputType="text"
+            android:padding="16dp" />
 
-            <EditText
-                android:id="@+id/input_text"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="@string/type_a_message"
-                android:inputType="text"
-                android:padding="16dp" />
+        <Button
+            android:id="@+id/send_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="@string/send"
+            android:textSize="18sp" />
 
-            <Button
-                android:id="@+id/send_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:text="@string/send"
-                android:textSize="18sp" />
-
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

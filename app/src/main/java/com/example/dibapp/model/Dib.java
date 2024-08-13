@@ -19,7 +19,7 @@ public class Dib {
     }
 
     public void resetMessages() {
-        messageList = new ArrayList<String>();
+        messageList.clear();
     }
 
 

@@ -3,4 +3,10 @@
     <string name="action_settings">Settings</string>
     <string name="type_a_message">Type a message</string>
     <string name="send">Send</string>
+    <string name="delete_chat">Delete Chat</string>
+    <string name="use_auto_save">Save Chat Messages</string>
+    <string name="about">About dib</string>
+    <string name="help">Help</string>
+    <string name="about_message">dib is a service that provides resources to people without smartphoens or internet access. This enables people to access crucial information, such as directions despite not having internet access.\nThis is a prototype for a dib app. This, if built as its intended will access the SMS of a user\'s phone to send messages to a Twilio API phone numebr which can then handle the internet-required task and send the user a resonse via SMS.</string>
+    <string name="key_use_auto_save">AUTO_SAVE</string>
 </resources>
