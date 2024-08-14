@@ -50,9 +50,6 @@ public class Dib {
         messageList.add(message);
     }
 
-    public String getJSONFromCurrentGame() {
-        return getJSONFromMessages(this);
-    }
 }
 
 

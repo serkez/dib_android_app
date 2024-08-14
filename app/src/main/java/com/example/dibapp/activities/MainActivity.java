@@ -67,7 +67,9 @@ public class MainActivity extends AppCompatActivity {
         messageAdapter = new MessageAdapter(mIsNightMode, chat.getMessageList());
         recyclerView.setAdapter(messageAdapter);
 
-        doInitialStart(savedInstanceState);
+        doInitialStart(savedInstanceState); //we redundantly create new dib. should only check for sharedPref?
+
+
 
         Button sendButton = findViewById(R.id.send_button);
         EditText inputText = findViewById(R.id.input_text);
@@ -88,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
                 new Handler().postDelayed(() -> addMessage(finalResponse), 1000);
             }
         });
-
+        scrollToLastMessage();
     }
 
     @Override
@@ -132,6 +134,12 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(messageAdapter);
     }
 
+
+    // Helper method to scroll to the last message
+    private void scrollToLastMessage() {
+        if (!chat.getMessageList().isEmpty()) {
+            recyclerView.post(() -> recyclerView.scrollToPosition(chat.getMessageList().size() - 1));        }
+    }
 
     private void toggleMenuItem(MenuItem item) {
         item.setChecked(!item.isChecked());
