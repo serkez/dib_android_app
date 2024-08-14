@@ -9,6 +9,7 @@
     <string name="about_message">dib is a service that provides resources to people without smartphones or internet access. This enables people to access crucial information, such as directions despite not having internet access.\nThis is a prototype for a dib app. This, if built as its intended will access the SMS of a user\'s phone to send messages to a Twilio API phone number which can then handle the internet-required task and send the user a response via SMS. \nRight now, the app simulates the responses by using predetermiend responses instead of accessing real data via SMS and APIs. This app serves as a model for the visual aspects of the dib app with hints of future functionality.</string>
     <string name="key_use_auto_save">AUTO_SAVE</string>
     <string name="title_activity_help">Help Center</string>
+    <string name="fab">About dib\n</string>
 
 
     <string-array name="prompts">

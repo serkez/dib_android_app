@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dibapp.R;
 import com.example.dibapp.classes.HelpAdapter;
+import com.example.dibapp.classes.Utils;
 import com.example.dibapp.model.HelpItem;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 /*
@@ -56,7 +58,12 @@ public class HelpActivity extends AppCompatActivity {
         List<HelpItem> helpItemList = getHelpItemList();
         HelpAdapter helpAdapter = new HelpAdapter(helpItemList);
         recyclerView.setAdapter(helpAdapter);
+        FloatingActionButton fabAbout = findViewById(R.id.fab_about);
+        fabAbout.setOnClickListener(view -> handleFABClick());
     }
+
+    private void handleFABClick() {
+        Utils.showInfoDialog(this, R.string.app_name, R.string.about_message);    }
 
     private List<HelpItem> getHelpItemList() {
         String[] helpItemsArray = getResources().getStringArray(R.array.helpItemList);
