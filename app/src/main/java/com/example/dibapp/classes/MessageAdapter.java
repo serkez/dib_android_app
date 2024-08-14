@@ -17,10 +17,13 @@ import java.util.List;
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageViewHolder> {
 
     private List<String> messageList;
+    private final boolean mIS_NIGHT_MODE;
 
 
-    public MessageAdapter(List<String> messageList) {
+    public MessageAdapter(boolean isNightMode, List<String> messageList) {
+        mIS_NIGHT_MODE = isNightMode;
         this.messageList = messageList;
+
     }
 /*    public MessageAdapter(Dib chat){
         this.chat = chat;
@@ -41,8 +44,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
     String message = messageList.get(position);
 
+    setColorOfAllTextViews(holder, position % 2 == 0);
     // Check if the index is even or odd to determine the sender
-    if (position % 2 == 0) {
+   /* if (position % 2 == 0) {
         // Even index: User's message (right-aligned)
         holder.messageTextView.setGravity(Gravity.END); // X work
         holder.messageTextView.setBackgroundResource(R.drawable.user_message_background);
@@ -52,10 +56,22 @@ public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
         holder.messageTextView.setGravity(Gravity.START); //X work
         holder.messageTextView.setBackgroundResource(R.drawable.computer_message_background);
         holder.messageTextView.setTextColor(Color.BLACK);
-    }
+    }*/
 
     holder.messageTextView.setText(message);
 }
+
+
+    private void setColorOfAllTextViews(MessageViewHolder holder, boolean isUser) {
+        if(isUser){
+            holder.messageTextView.setBackgroundResource(R.drawable.user_message_background);
+            holder.messageTextView.setTextColor(mIS_NIGHT_MODE ? Color.BLACK : Color.WHITE);
+        }
+        else{
+            holder.messageTextView.setBackgroundResource(R.drawable.computer_message_background);
+            holder.messageTextView.setTextColor(mIS_NIGHT_MODE ? Color.WHITE : Color.BLACK);
+        }
+    }
 
 
     @Override

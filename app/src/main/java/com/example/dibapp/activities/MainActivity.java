@@ -1,9 +1,11 @@
-package com.example.dibapp;
+package com.example.dibapp.activities;
 
 import static com.example.dibapp.model.Dib.getJSONFromMessages;
 import static com.example.dibapp.model.Dib.getMessagesFromJSON;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 
+import com.example.dibapp.R;
 import com.example.dibapp.classes.MessageAdapter;
 import com.example.dibapp.classes.Utils;
 import com.example.dibapp.databinding.ActivityMainBinding;
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private RecyclerView recyclerView;
 
+    private boolean mIsNightMode;
 
     private final String mKEY = "MESS";
 
@@ -48,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                 : new Dib();
 
         setContentView(R.layout.activity_main);
-
+        setIsNightMode();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -60,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rv_messages);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        messageAdapter = new MessageAdapter(chat.getMessageList());
+        messageAdapter = new MessageAdapter(mIsNightMode, chat.getMessageList());
         recyclerView.setAdapter(messageAdapter);
 
         doInitialStart(savedInstanceState);
@@ -124,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         // Update RecyclerView
-        messageAdapter = new MessageAdapter(chat.getMessageList());
+        messageAdapter = new MessageAdapter(mIsNightMode, chat.getMessageList());
         recyclerView.setAdapter(messageAdapter);
     }
 
@@ -200,6 +204,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == R.id.action_help) {
+            startActivity(new Intent(this, HelpActivity.class));
             return true;
         } else if (itemId == R.id.action_about) {
             showAbout();
@@ -239,7 +244,17 @@ public class MainActivity extends AppCompatActivity {
         //outState.putString(mKEY_GAME, getJSONFromGame(mGame));
         //outState.putBoolean(mKEY_AUTO_SAVE, mUseAutoSave);
     }
+
+
+    private void setIsNightMode() {
+        mIsNightMode = (getApplicationContext().getResources().getConfiguration().uiMode &
+                Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+    }
+
+
 /*
+
+
     @Override
     protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
