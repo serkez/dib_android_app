@@ -1,8 +1,10 @@
 package com.example.dibapp.model;
 
+// This is the model for the items in Help activity
+
 public class HelpItem {
-    private String prompt;
-    private String explanation;
+    private final String prompt;
+    private final String explanation;
 
     public HelpItem(String prompt, String explanation) {
         this.prompt = prompt;

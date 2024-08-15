@@ -9,6 +9,8 @@ import androidx.core.content.ContextCompat;
 
 import com.example.dibapp.R;
 
+// Utils brought over from previous projects. code is unchanged
+
 public class Utils
 {
     // AlertDialog
