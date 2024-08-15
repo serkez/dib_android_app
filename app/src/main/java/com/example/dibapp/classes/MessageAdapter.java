@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.dibapp.R;
@@ -63,14 +64,23 @@ public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
 
 
     private void setColorOfAllTextViews(MessageViewHolder holder, boolean isUser) {
-        if(isUser){
+        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) holder.messageTextView.getLayoutParams();
+
+        if (isUser) {
+            // Align the user's message to the right
+            params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
+            params.startToStart = ConstraintLayout.LayoutParams.UNSET;
             holder.messageTextView.setBackgroundResource(R.drawable.user_message_background);
             holder.messageTextView.setTextColor(mIS_NIGHT_MODE ? Color.BLACK : Color.WHITE);
-        }
-        else{
+        } else {
+            // Align the computer's message to the left
+            params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
+            params.endToEnd = ConstraintLayout.LayoutParams.UNSET;
             holder.messageTextView.setBackgroundResource(R.drawable.computer_message_background);
             holder.messageTextView.setTextColor(mIS_NIGHT_MODE ? Color.WHITE : Color.BLACK);
         }
+
+
     }
 
 
