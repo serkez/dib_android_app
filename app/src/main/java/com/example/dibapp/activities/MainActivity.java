@@ -27,13 +27,12 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 
-import java.util.ArrayList;
+// Main Activity. Here is where all our COntroller logic is
 
 public class MainActivity extends AppCompatActivity {
     private Dib chat;
 
     private MessageAdapter messageAdapter;
-    private ActivityMainBinding binding;
     private RecyclerView recyclerView;
 
     private boolean mIsNightMode;
@@ -52,20 +51,12 @@ public class MainActivity extends AppCompatActivity {
                 : new Dib();
 
         setContentView(R.layout.activity_main);
-        setIsNightMode();
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
+        setIsNightMode();
+        setupToolbar();
         setFieldReferencesToResFileValues();
         restoreAppSettingsFromPrefs();
-       // setupScreen(); move stuff into method
-
-
-        recyclerView = findViewById(R.id.rv_messages);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        messageAdapter = new MessageAdapter(mIsNightMode, chat.getMessageList());
-        recyclerView.setAdapter(messageAdapter);
+        setupView();
 
         doInitialStart(savedInstanceState); //we redundantly create new dib. should only check for sharedPref?
 
@@ -73,37 +64,20 @@ public class MainActivity extends AppCompatActivity {
         scrollToLastMessage();
     }
 
-    private void setupSendButton() {
-        Button sendButton = findViewById(R.id.send_button);
-        EditText inputText = findViewById(R.id.input_text);
-
-        sendButton.setOnClickListener(view -> {
-            handleSendButton(inputText);
-        });
+    //we need to keep track of night mode so we can change text color's based on night mode
+    private void setIsNightMode() {
+        mIsNightMode = (getApplicationContext().getResources().getConfiguration().uiMode &
+                Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
     }
 
-    private void handleSendButton(EditText inputText) {
-        String userInput = inputText.getText().toString().trim().toLowerCase();
-        if (!userInput.isEmpty()) {
-            addMessage(userInput);
-            inputText.setText("");
-            String response = chat.getResponse(userInput);
-            new Handler().postDelayed(() -> addMessage(response), 1000);
-        }
+    private void setupToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 
-
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        saveMessagesToSharedPrefs();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        saveMessagesToSharedPrefs();
+    private void setFieldReferencesToResFileValues() {
+        // These values are the same strings used in the prefs xml as keys for each pref there
+        mKeyAutoSave = getString(R.string.key_use_auto_save);
     }
 
     private void saveMessagesToSharedPrefs() {
@@ -121,6 +95,15 @@ public class MainActivity extends AppCompatActivity {
             messageAdapter.notifyDataSetChanged();
         }
     }
+
+    private void setupView() {
+        recyclerView = findViewById(R.id.rv_messages);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        messageAdapter = new MessageAdapter(mIsNightMode, chat.getMessageList());
+        recyclerView.setAdapter(messageAdapter);
+    }
+
     private void doInitialStart(Bundle savedInstanceState) {
         if (savedInstanceState != null) {
             chat = Dib.getMessagesFromJSON(savedInstanceState.getString(mKEY));
@@ -135,17 +118,38 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(messageAdapter);
     }
 
+    private void setupSendButton() {
+        Button sendButton = findViewById(R.id.send_button);
+        EditText inputText = findViewById(R.id.input_text);
 
-    // Helper method to scroll to the last message
-    private void scrollToLastMessage() {
-        if (!chat.getMessageList().isEmpty()) {
-            recyclerView.post(() -> recyclerView.scrollToPosition(chat.getMessageList().size() - 1));        }
+        sendButton.setOnClickListener(view -> {
+            handleSendButton(inputText);
+        });
     }
 
-    private void toggleMenuItem(MenuItem item) {
-        item.setChecked(!item.isChecked());
-        mPrefUseAutoSave = item.isChecked();
-        saveAutoSavePreference();
+    //adds message from textBox, retreives response from model, and adds that as well
+    private void handleSendButton(EditText inputText) {
+        String userInput = inputText.getText().toString().trim().toLowerCase();
+        if (!userInput.isEmpty()) {
+            addMessage(userInput);
+            inputText.setText("");
+            String response = chat.getResponse(userInput); // response logic is handled by model
+            new Handler().postDelayed(() -> addMessage(response), 1000);
+        }
+    }
+
+    //adds message to message list in model and scrolls to current message
+    private void addMessage(String message) {
+        chat.addMessageToList(message);
+        messageAdapter.notifyItemInserted(chat.getMessageList().size() - 1);
+        if (recyclerView != null && chat.getMessageList().size() > 1) //not working
+            recyclerView.scrollToPosition(chat.getMessageList().size() - 1);
+    }
+
+    private void scrollToLastMessage() {
+        if (!chat.getMessageList().isEmpty()) {
+            recyclerView.post(() -> recyclerView.scrollToPosition(chat.getMessageList().size() - 1));
+        }
     }
 
     private void saveAutoSavePreference() {
@@ -155,42 +159,14 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
     }
 
-
-    private void setFieldReferencesToResFileValues() {
-        // These values are the same strings used in the prefs xml as keys for each pref there
-        mKeyAutoSave = getString(R.string.key_use_auto_save);
-    }
-
-        private void restoreAppSettingsFromPrefs() {
-        // Since this is for reading only, no editor is needed unlike in saveRestoreState
+    private void restoreAppSettingsFromPrefs() {
         SharedPreferences preferences = getSharedPreferences(mKeyPrefsName, MODE_PRIVATE);
-
         // restore AutoSave preference value
         mPrefUseAutoSave = preferences.getBoolean(mKeyAutoSave, true);
     }
 
-    private void saveSettingsToSharedPrefs(SharedPreferences.Editor editor) {
-        // save "autoSave" preference
-        editor.putBoolean(mKeyAutoSave, mPrefUseAutoSave);
-    }
-
-    private void saveMessagesToSharedPrefsIfAutoSaveIsOn(SharedPreferences.Editor editor, ArrayList<String> messages) {
-        if (mPrefUseAutoSave) {
-            editor.putString(mKEY, getJSONFromMessages(chat));
-        }
-        else {
-            editor.remove(mKEY);
-        }
-    }
-
-
-
-
-    private void addMessage(String message) {
-        chat.addMessageToList(message);
-        messageAdapter.notifyItemInserted(chat.getMessageList().size() - 1);
-        if (recyclerView != null && chat.getMessageList().size() > 1) //not working
-            recyclerView.scrollToPosition(chat.getMessageList().size() - 1);
+    private void showAbout() {
+        Utils.showInfoDialog(this, R.string.app_name, R.string.about_message);
     }
 
     @Override
@@ -222,10 +198,17 @@ public class MainActivity extends AppCompatActivity {
         } else if (itemId == R.id.action_discard) {
             discardMessages();
             return true;
-        } else// If the user clicked on some unknown menu item, then the super... will handle that
+        } else// If the user clicked on some unknown menu item, then the super will handle that
             return super.onOptionsItemSelected(item);
     }
 
+    private void toggleMenuItem(MenuItem item) {
+        item.setChecked(!item.isChecked());
+        mPrefUseAutoSave = item.isChecked();
+        saveAutoSavePreference();
+    }
+
+    //deletes all messages
     private void discardMessages() {
         chat.resetMessages();
         messageAdapter.notifyDataSetChanged();
@@ -235,65 +218,22 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
- /*   private void toggleMenuItem(MenuItem item) {
-        item.setChecked(!item.isChecked());
-    }*/
-
-    private void showAbout() {
-        Utils.showInfoDialog(this, R.string.app_name, R.string.about_message);
-    }
-
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(mKEY, getJSONFromMessages(chat));
-        //outState.putString(mKEY_GAME, getJSONFromGame(mGame));
-        //outState.putBoolean(mKEY_AUTO_SAVE, mUseAutoSave);
     }
-
-
-    private void setIsNightMode() {
-        mIsNightMode = (getApplicationContext().getResources().getConfiguration().uiMode &
-                Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
-    }
-
-
-/*
-
 
     @Override
-    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-
-        // Retrieve the JSON string from the saved instance state
-        String jsonMessages = savedInstanceState.getString(mKEY);
-
-        // Convert JSON string back to Dib object
-       // chat = getMessagesFromJSON(jsonMessages);
-
-        // Notify the adapter of the data change
-      //  messageAdapter.notifyDataSetChanged();
-
-        // Scroll to the last message
-        if (chat.getMessageList().size() > 1) {
-            recyclerView.scrollToPosition(chat.getMessageList().size() - 1);
-        }
-
-
-
-    // mUseAutoSave = savedInstanceState.getBoolean(mKEY_AUTO_SAVE, true);
-        //  updateUI();
+    protected void onPause() {
+        super.onPause();
+        saveMessagesToSharedPrefs();
     }
 
-    UpdateUI();*/
-
- /*   private void updateUI() {
-      try {
-            mImageViewStones.setImageDrawable(ContextCompat.getDrawable(this, mImages[mGame.getStonesRemaining()]));
-        } catch (ArrayIndexOutOfBoundsException e) {
-            mSnackBar.setText(R.string.error_msg_could_not_update_image);
-            mSnackBar.show();
-        }
-    }*/
+    @Override
+    protected void onStop() {
+        super.onStop();
+        saveMessagesToSharedPrefs();
+    }
 
 }
