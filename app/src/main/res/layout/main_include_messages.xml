@@ -21,7 +21,7 @@ tools:showIn="@layout/content_main">
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:padding="16dp"
+        android:padding="@dimen/med_padding"
         tools:showIn="@layout/content_main" />
 
 </com.google.android.material.card.MaterialCardView>

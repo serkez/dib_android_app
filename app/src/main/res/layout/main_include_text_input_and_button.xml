@@ -25,7 +25,7 @@
             android:background="?android:attr/editTextBackground"
             android:hint="@string/type_a_message"
             android:inputType="text"
-            android:padding="16dp" />
+            android:padding="@dimen/med_padding" />
 
         <!-- Button for sending message -->
         <Button
@@ -33,9 +33,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
-            android:padding="16dp"
+            android:padding="@dimen/med_padding"
             android:text="@string/send"
-            android:textSize="18sp" />
+            android:textSize="@dimen/text_size" />
 
     </LinearLayout>
 

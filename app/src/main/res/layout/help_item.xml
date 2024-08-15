@@ -3,19 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="@dimen/med_padding">
 
     <TextView
         android:id="@+id/promptTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textStyle="bold"
-        android:textSize="16sp"/>
+        android:textSize="@dimen/small_text"/>
 
     <TextView
         android:id="@+id/explanationTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:paddingTop="4dp"/>
+        android:textSize="@dimen/xsmall_text"
+        android:paddingTop="@dimen/activity_horizontal_half_margin"/>
 </LinearLayout>

@@ -8,4 +8,8 @@
     <dimen name="card_text_standard_size">18sp</dimen>
     <dimen name="card_text_larger_size">24sp</dimen>
     <dimen name="message_radius">16dp</dimen>
+    <dimen name="med_padding">16dp</dimen>
+    <dimen name="text_size">18sp</dimen>
+    <dimen name="small_text">16sp</dimen>
+    <dimen name="xsmall_text">14sp</dimen>
 </resources>

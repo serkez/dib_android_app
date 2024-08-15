@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="16dp">
+    android:padding="@dimen/med_padding">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:layout_below="@id/toolbar"
             android:layout_above="@id/fab_about"
-            android:paddingTop="8dp"/>
+            android:paddingTop="@dimen/activity_horizontal_margin"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             style="@style/FabStyle"
@@ -25,7 +25,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginEnd="@dimen/med_padding"
+            android:layout_marginBottom="@dimen/med_padding"
             app:srcCompat="@android:drawable/ic_dialog_info" />
 </RelativeLayout>

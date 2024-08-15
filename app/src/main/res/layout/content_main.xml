@@ -9,14 +9,6 @@
     android:padding="@dimen/activity_horizontal_half_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <!--
-    android:fitsSystemWindows="true"
-
-    when i remove fits sytem, bottom shows up
-    when re remove app_barscrolling, bottom pops up with keyboard but title bar goes away
-    and now automatic scrolling is gone too-->
-
-
     <!-- RecyclerView for displaying chat messages inside a MaterialCardView -->
     <com.google.android.material.card.MaterialCardView
         style="@style/Widget.Material3.CardView.Outlined"
@@ -30,7 +22,7 @@
             android:id="@+id/rv_messages"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="16dp"
+            android:padding="@dimen/med_padding"
             tools:showIn="@layout/content_main" />
     </com.google.android.material.card.MaterialCardView>
 
@@ -53,15 +45,15 @@
             android:layout_weight="1"
             android:hint="@string/type_a_message"
             android:inputType="text"
-            android:padding="16dp" />
+            android:padding="@dimen/med_padding" />
 
         <Button
             android:id="@+id/send_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="16dp"
+            android:padding="@dimen/med_padding"
             android:text="@string/send"
-            android:textSize="18sp" />
+            android:textSize="@dimen/text_size" />
 
     </LinearLayout>
 
