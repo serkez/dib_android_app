@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--style to changecolumns in help center based on orientation-->
 <resources>
     <integer name="rv_help_columns">2</integer>
 </resources>

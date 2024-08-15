@@ -1,4 +1,5 @@
 <resources>
+
     <style name="MaterialCardWithColoredBorder" parent="Widget.Material3.CardView.Outlined">
         <item name="strokeColor">?attr/colorPrimary</item>
     </style>
@@ -81,7 +82,7 @@
         <item name="android:layout_marginBottom">@dimen/activity_horizontal_margin</item>
         <item name="android:gravity">center</item>
     </style>
-
+    <!--style to change fab location based on orientation-->
     <style name="FabStyle">
         <item name="android:layout_centerHorizontal">true</item>
     </style>

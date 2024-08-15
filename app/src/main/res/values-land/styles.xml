@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <!--style to change fab location based on orientation-->
     <style name="FabStyle">
         <item name="android:layout_alignParentEnd">true</item>
     </style>
