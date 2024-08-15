@@ -1,5 +1,8 @@
 package com.example.dibapp.model;
 
+import android.os.Handler;
+import android.widget.EditText;
+
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -23,8 +26,6 @@ public class Dib {
     }
 
 
-
-
     public String getAbout() {
         return "";
     }
@@ -39,16 +40,28 @@ public class Dib {
         return gson.toJson(obj);
     }
 
-    public ArrayList<String> getMessageList(){
-        if(messageList == null){
+    public ArrayList<String> getMessageList() {
+        if (messageList == null) {
             return new ArrayList<String>();
         }
         return messageList;
     }
 
-    public void addMessage(String message){
+    public String getResponse(String userInput) {
+        String response = "I don't understand that, here is what you can ask me...";
+        if (userInput.equals("hi") || userInput.equals("hello"))
+            response = "Hello there!";
+        else if (userInput.contains("bring me home")) {
+            response = "The directions feature is currently under construction, try again another time.";
+        }
+        return response;
+    }
+
+
+    public void addMessageToList(String message) {
         messageList.add(message);
     }
+
 
 }
 

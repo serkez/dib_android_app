@@ -69,29 +69,30 @@ public class MainActivity extends AppCompatActivity {
 
         doInitialStart(savedInstanceState); //we redundantly create new dib. should only check for sharedPref?
 
+        setupSendButton();
+        scrollToLastMessage();
+    }
 
-
+    private void setupSendButton() {
         Button sendButton = findViewById(R.id.send_button);
         EditText inputText = findViewById(R.id.input_text);
 
         sendButton.setOnClickListener(view -> {
-            String response = "I don't understand that, here is what you can ask me...";
-            String userInput = inputText.getText().toString().trim().toLowerCase();
-            if (!userInput.isEmpty()) {
-                addMessage(userInput);
-                inputText.setText("");
-                if (userInput.equals("hi") || userInput.equals("hello"))
-                    response = "Hello there!";
-                else if (userInput.contains("bring me home")) {
-                    response = "The directions feature is currently under construction, try again another time.";
-                }
-                // Simulate a response after a delay
-                String finalResponse = response;
-                new Handler().postDelayed(() -> addMessage(finalResponse), 1000);
-            }
+            handleSendButton(inputText);
         });
-        scrollToLastMessage();
     }
+
+    private void handleSendButton(EditText inputText) {
+        String userInput = inputText.getText().toString().trim().toLowerCase();
+        if (!userInput.isEmpty()) {
+            addMessage(userInput);
+            inputText.setText("");
+            String response = chat.getResponse(userInput);
+            new Handler().postDelayed(() -> addMessage(response), 1000);
+        }
+    }
+
+
 
     @Override
     protected void onPause() {
@@ -155,9 +156,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void setupScreen() {
-    }
-
     private void setFieldReferencesToResFileValues() {
         // These values are the same strings used in the prefs xml as keys for each pref there
         mKeyAutoSave = getString(R.string.key_use_auto_save);
@@ -189,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void addMessage(String message) {
-        chat.addMessage(message);
+        chat.addMessageToList(message);
         messageAdapter.notifyItemInserted(chat.getMessageList().size() - 1);
         if (recyclerView != null && chat.getMessageList().size() > 1) //not working
             recyclerView.scrollToPosition(chat.getMessageList().size() - 1);
