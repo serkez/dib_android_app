@@ -81,4 +81,8 @@
         <item name="android:layout_marginBottom">@dimen/activity_horizontal_margin</item>
         <item name="android:gravity">center</item>
     </style>
+
+    <style name="FabStyle">
+        <item name="android:layout_centerHorizontal">true</item>
+    </style>
 </resources>

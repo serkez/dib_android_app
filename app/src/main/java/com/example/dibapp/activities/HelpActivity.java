@@ -1,8 +1,11 @@
 package com.example.dibapp.activities;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
+
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -53,7 +56,8 @@ public class HelpActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         RecyclerView recyclerView = findViewById(R.id.rv_help_item);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        final int RV_COLUMN_COUNT = getResources().getInteger(R.integer.rv_help_columns);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, RV_COLUMN_COUNT));
 
         List<HelpItem> helpItemList = getHelpItemList();
         HelpAdapter helpAdapter = new HelpAdapter(helpItemList);
@@ -63,7 +67,8 @@ public class HelpActivity extends AppCompatActivity {
     }
 
     private void handleFABClick() {
-        Utils.showInfoDialog(this, R.string.app_name, R.string.about_message);    }
+        Utils.showInfoDialog(this, R.string.app_name, R.string.about_message);
+    }
 
     private List<HelpItem> getHelpItemList() {
         String[] helpItemsArray = getResources().getStringArray(R.array.helpItemList);
